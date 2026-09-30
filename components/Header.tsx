@@ -22,6 +22,7 @@ interface HeaderProps {
     isCodeCopied: boolean;
     onSettingsClick: () => void;
     onTutorClick?: () => void;
+    onApkClick?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -40,6 +41,7 @@ const Header: React.FC<HeaderProps> = ({
   isCodeCopied,
   onSettingsClick,
   onTutorClick,
+  onApkClick,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -85,9 +87,22 @@ const Header: React.FC<HeaderProps> = ({
               <span>Faculty Tutor Personas</span>
             </button>
           )}
+          {onApkClick && (
+            <button 
+              onClick={() => handleLinkClick(onApkClick)} 
+              className="w-full text-left font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 p-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm"
+            >
+              <span>🤖</span>
+              <span>Install Android App (.APK)</span>
+            </button>
+          )}
           {user ? (
             <>
-              <p className="px-4 py-2 text-sm text-[var(--color-text-muted)] border-b border-[var(--color-border)]/50 mb-2">Logged in as <strong className="text-[var(--color-text-main)]">{user.email}</strong></p>
+              <div className="px-4 py-2.5 text-xs text-[var(--color-text-muted)] border-b border-[var(--color-border)]/50 mb-2 bg-[var(--color-surface-subtle)] rounded-lg">
+                <span className="text-[10px] text-[var(--color-text-subtle)] uppercase tracking-wider block font-bold">Logged in Student:</span>
+                <strong className="text-[var(--color-text-main)] text-sm block mt-0.5">{user.fullName || user.email.split('@')[0]}</strong>
+                <span className="text-xs font-mono text-[var(--color-text-subtle)]">{user.email}</span>
+              </div>
               {currentView === 'admin' ? (
                 <button onClick={() => handleLinkClick(onLogoClick)} className="w-full text-left font-bold text-[var(--color-accent)] bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 p-3 rounded-md transition-colors flex items-center gap-2">
                   <span>← Back to Personal App</span>
@@ -148,6 +163,17 @@ const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
+            {onApkClick && (
+              <button 
+                onClick={onApkClick} 
+                className="text-xs font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs"
+                title="Install Android App (.APK)"
+              >
+                <span>🤖</span>
+                <span className="hidden sm:inline">Android APK</span>
+              </button>
+            )}
+
             <button onClick={onSettingsClick} className="p-2 rounded-full text-[var(--color-text-muted)] hover:text-[var(--color-text-accent)] hover:bg-[var(--color-surface-hover)] transition-colors" title="App Settings">
               <SettingsIcon className="w-5 h-5" />
             </button>
@@ -166,7 +192,14 @@ const Header: React.FC<HeaderProps> = ({
             {user ? (
               <>
                 <div className="flex items-center gap-2 border-l border-[var(--color-border)] ml-2 pl-4">
-                  <span className="text-sm text-[var(--color-text-muted)] hidden lg:inline">{user.email}</span>
+                  <div className="hidden lg:flex flex-col text-right">
+                    <span className="text-xs font-bold text-[var(--color-text-main)] truncate max-w-[200px]">
+                      👤 {user.fullName || user.email.split('@')[0]}
+                    </span>
+                    <span className="text-[10px] text-[var(--color-text-subtle)] font-mono truncate max-w-[200px]">
+                      {user.email}
+                    </span>
+                  </div>
                   {currentView === 'admin' ? (
                     <button 
                       onClick={onLogoClick} 

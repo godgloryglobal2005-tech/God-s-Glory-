@@ -463,6 +463,29 @@ const InputForm: React.FC<InputFormProps> = ({
   return (
     <div className="bg-[var(--color-surface)]/90 rounded-xl p-5 md:p-6 flex-grow flex flex-col shadow-lg border border-[var(--color-border)]/80 min-h-[300px] lg:min-h-0 backdrop-blur-sm">
       <div className="space-y-5">
+        {/* Auth Gate Banner for Unauthenticated Visitors */}
+        {!isLoggedIn && (
+          <div className="p-4 bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border-2 border-amber-500/40 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">🔒</span>
+              <div>
+                <p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">
+                  Authentication Required to Use Tutors & Solver
+                </p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                  You must create an account or log in before performing operations on God's Glory Tutors.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onLoginClick}
+              className="shrink-0 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-black text-xs py-2.5 px-4 rounded-lg shadow-md transition-all transform hover:-translate-y-0.5"
+            >
+              Sign Up / Log In
+            </button>
+          </div>
+        )}
         {/* Global Country & Curriculum Indicator */}
         <div className="bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-indigo-900/10 border border-amber-300/40 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
           <div className="flex items-center gap-3">
@@ -850,18 +873,33 @@ const InputForm: React.FC<InputFormProps> = ({
 
         {/* Question Prompt Area */}
         <div>
-          <label htmlFor="prompt-textarea" className={commonLabelClasses}>
-            Your Academic Question or Problem Statement
-          </label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label htmlFor="prompt-textarea" className={`${commonLabelClasses} mb-0`}>
+              Your Academic Question or Problem Statement
+            </label>
+            <span className="hidden sm:inline text-[11px] text-[var(--color-text-subtle)] font-medium">
+              💡 Laptop shortcut: <kbd className="px-1.5 py-0.5 bg-[var(--color-surface-subtle)] border border-[var(--color-border)] rounded text-[10px] font-mono font-bold">Ctrl+Enter</kbd> to solve
+            </span>
+          </div>
           <textarea
             id="prompt-textarea"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
+            onKeyDown={(e) => {
+              if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                if (isLoggedIn) {
+                  onSubmit();
+                } else {
+                  onLoginClick();
+                }
+              }
+            }}
             onPaste={handlePaste}
             placeholder={
               isUniversityLevel
-                ? "Type your question here, or paste / load a photo of the problem below..."
-                : "Type your academic question here, or paste / load a photo from your textbook or notes below..."
+                ? "Type your question here, or paste / load a photo of the problem below... (Press Ctrl + Enter on keyboard to solve)"
+                : "Type your academic question here, or paste / load a photo from your textbook or notes below... (Press Ctrl + Enter to solve)"
             }
             rows={4}
             className={`${commonSelectClasses} resize-y font-normal`}
@@ -976,28 +1014,43 @@ const InputForm: React.FC<InputFormProps> = ({
 
       {/* Submit Button & Action Bar */}
       <div className="mt-auto pt-5 space-y-2">
-        <button
-          onClick={onSubmit}
-          disabled={isLoading || (!prompt.trim() && !imagePreviewUrl)}
-          className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3.5 px-4 rounded-lg transition-all duration-200 disabled:bg-[var(--color-accent-disabled)] disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-base"
-        >
-          {isLoading ? (
-            <>
-              <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Solving Problem & Generating Visuals...
-            </>
-          ) : (
-            '⚡ Solve Problem & Generate Visual Solution'
-          )}
-        </button>
-
-        {!isLoggedIn && (
-          <p className="text-center text-xs text-[var(--color-text-subtle)]">
-            💡 Using as Guest Scholar. <button type="button" onClick={onLoginClick} className="text-amber-500 font-bold hover:underline">Log in</button> to save search history & track quizzes.
-          </p>
+        {isLoggedIn ? (
+          <button
+            onClick={onSubmit}
+            disabled={isLoading || (!prompt.trim() && !imagePreviewUrl)}
+            className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3.5 px-4 rounded-lg transition-all duration-200 disabled:bg-[var(--color-accent-disabled)] disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-base"
+          >
+            {isLoading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Solving Problem & Generating Visuals...
+              </>
+            ) : (
+              '⚡ Solve Problem & Generate Visual Solution'
+            )}
+          </button>
+        ) : (
+          <div className="p-4 rounded-xl border-2 border-amber-500/40 bg-amber-500/10 text-center space-y-2.5">
+            <div className="flex items-center justify-center gap-2 text-amber-800 dark:text-amber-300 font-extrabold text-sm">
+              <span>🔒</span>
+              <span>Account Sign Up or Log In Required</span>
+            </div>
+            <p className="text-xs text-[var(--color-text-muted)] max-w-md mx-auto">
+              To submit questions, load photo diagrams, and receive university-level solutions from God's Glory Tutors, you must create an account or log in.
+            </p>
+            <div className="flex gap-2 justify-center pt-1">
+              <button
+                type="button"
+                onClick={onLoginClick}
+                className="bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-2.5 px-5 rounded-lg text-xs shadow-md transition-all transform hover:-translate-y-0.5"
+              >
+                Sign Up / Log In to Unlock App
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

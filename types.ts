@@ -97,10 +97,30 @@ export type SolutionType = ContentPart[];
 
 export interface User {
   email: string;
+  fullName?: string;
   isAdmin: boolean;
   country?: string;
   phoneNumber?: string;
   curriculum?: string;
+  createdAt?: number;
+  lastLoginAt?: number;
+  loginCount?: number;
+  isOnline?: boolean;
+  lastActiveAt?: number;
+}
+
+export interface ActiveSession {
+  sessionId: string;
+  email: string;
+  fullName?: string;
+  country?: string;
+  phoneNumber?: string;
+  curriculum?: string;
+  loginTime: number;
+  lastActiveTime: number;
+  userAgent?: string;
+  ip?: string;
+  isOnline: boolean;
 }
 
 export interface QuizQuestion {

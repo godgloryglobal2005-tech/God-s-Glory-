@@ -1,0 +1,98 @@
+[
+  {
+    "sessionId": "1790778127688-xbeq5qz",
+    "email": "perfectosaghae@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 08166267029",
+    "curriculum": "NERDC / WAEC / NECO / JAMB Standard",
+    "loginTime": 1790778127688,
+    "lastActiveTime": 1790778278343,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": true
+  },
+  {
+    "sessionId": "1790778055577-pc10grr",
+    "email": "uyiglory2005@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 800 000 0000",
+    "curriculum": "National & Global Academic Standard",
+    "loginTime": 1790778055577,
+    "lastActiveTime": 1790778105836,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": false
+  },
+  {
+    "sessionId": "1790778039161-yfuq33h",
+    "email": "perfectosaghae@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 08166267029",
+    "curriculum": "NERDC / WAEC / NECO / JAMB Standard",
+    "loginTime": 1790778039161,
+    "lastActiveTime": 1790778039456,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": false
+  },
+  {
+    "sessionId": "1790777956963-uh569na",
+    "email": "uyiglory2005@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 800 000 0000",
+    "curriculum": "National & Global Academic Standard",
+    "loginTime": 1790777956963,
+    "lastActiveTime": 1790778007252,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": false
+  },
+  {
+    "sessionId": "1790777929142-o2ygge0",
+    "email": "perfectosaghae@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 08166267029",
+    "curriculum": "NERDC / WAEC / NECO / JAMB Standard",
+    "loginTime": 1790777929142,
+    "lastActiveTime": 1790777929440,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": false
+  },
+  {
+    "sessionId": "1790777420608-kjfivo5",
+    "email": "uyiglory2005@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 800 000 0000",
+    "curriculum": "National & Global Academic Standard",
+    "loginTime": 1790777420608,
+    "lastActiveTime": 1790777895935,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": false
+  },
+  {
+    "sessionId": "1790777275519-30wy68t",
+    "email": "perfectosaghae@gmail.com",
+    "country": "NG",
+    "phoneNumber": "+234 08166267029",
+    "curriculum": "NERDC / WAEC / NECO / JAMB Standard",
+    "loginTime": 1790777275519,
+    "lastActiveTime": 1790777325610,
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+    "ip": "105.112.11.146, 169.254.169.126",
+    "isOnline": false
+  },
+  {
+    "sessionId": "1790776884624-2pjc1a0",
+    "email": "student.samuel@example.com",
+    "country": "NG",
+    "phoneNumber": "+234 812 345 6789",
+    "curriculum": "WAEC / NECO Senior Secondary",
+    "loginTime": 1790776884624,
+    "lastActiveTime": 1790776884624,
+    "userAgent": "curl/7.88.1",
+    "ip": "127.0.0.1",
+    "isOnline": true
+  }
+]

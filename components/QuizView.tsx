@@ -395,13 +395,32 @@ export const QuizView: React.FC<QuizViewProps> = ({ currentUser, onLoginClick, o
         </div>
 
         {/* Action Button */}
-        <button
-          onClick={handleGenerateQuiz}
-          disabled={isLoading}
-          className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-200 text-base shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-        >
-          <span>🚀 Generate {questionCount}-Question Academic Quiz</span>
-        </button>
+        {currentUser ? (
+          <button
+            onClick={handleGenerateQuiz}
+            disabled={isLoading}
+            className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-200 text-base shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>🚀 Generate {questionCount}-Question Academic Quiz</span>
+          </button>
+        ) : (
+          <div className="p-4 rounded-xl border-2 border-amber-500/40 bg-amber-500/10 text-center space-y-2">
+            <div className="flex items-center justify-center gap-2 text-amber-800 dark:text-amber-300 font-extrabold text-sm">
+              <span>🔒</span>
+              <span>Account Sign Up or Log In Required</span>
+            </div>
+            <p className="text-xs text-[var(--color-text-muted)]">
+              Interactive syllabus quizzes and leaderboard scoring require an account. Please sign up or log in to begin.
+            </p>
+            <button
+              type="button"
+              onClick={onLoginClick}
+              className="bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-2.5 px-5 rounded-lg text-xs shadow-md transition-all transform hover:-translate-y-0.5"
+            >
+              Sign Up / Log In to Take Quizzes
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

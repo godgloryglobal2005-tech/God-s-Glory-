@@ -1,0 +1,10 @@
+{
+  "appId": "com.godsglorytutors.app",
+  "appName": "God's Glory Tutors",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://ais-dev-abofhnwpnosj6u574mdxve-224306312677.europe-west1.run.app",
+    "cleartext": true
+  }
+}

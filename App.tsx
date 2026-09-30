@@ -21,6 +21,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { getActivePersona, setActivePersona, TutorPersona } from './services/tutorPersonaService';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
 import CloseIcon from './components/icons/CloseIcon';
+import AndroidApkModal from './components/AndroidApkModal';
 
 const themes: Record<string, Record<string, string>> = {
   glory: {
@@ -245,6 +246,7 @@ const App: React.FC = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
+  const [isApkModalOpen, setIsApkModalOpen] = useState(false);
   const [activePersona, setActivePersonaState] = useState<TutorPersona>(() => getActivePersona());
 
   const [latestAnnouncement, setLatestAnnouncement] = useState<Announcement | null>(null);
@@ -273,6 +275,13 @@ const App: React.FC = () => {
     targetYear?: string,
     targetSemester?: string,
   ) => {
+    if (!currentUser) {
+      setAuthMode('signup');
+      setIsAuthModalOpen(true);
+      setError('Please sign up or log in first. Operating the problem solver and academic features requires an active account.');
+      return;
+    }
+
     if (!targetPrompt.trim() && !targetImagePart) {
       setError('Please enter a question or upload an image.');
       return;
@@ -346,25 +355,31 @@ const App: React.FC = () => {
     const user = authService.getCurrentUser();
     if (user) {
       setCurrentUser(user);
+    } else {
+      // Direct visitor to sign up or log in before performing further operations
+      setIsAuthModalOpen(true);
+      setAuthMode('signup');
     }
 
-    // Check for announcements. This runs when the view changes.
-    const allAnnouncements = announcementService.getAnnouncements();
-    if (allAnnouncements.length > 0) {
-      const latest = allAnnouncements[0];
-      setLatestAnnouncement(latest);
-      const dismissedId = sessionStorage.getItem('dismissedAnnouncementId');
-      // If the latest announcement is the one we've already dismissed, keep it hidden.
-      // Otherwise, make sure the banner is shown.
-      if (dismissedId === latest.id) {
-        setIsAnnouncementDismissed(true);
+    // Check for announcements with server fetch
+    const updateAnnouncements = (list: Announcement[]) => {
+      if (list.length > 0) {
+        const latest = list[0];
+        setLatestAnnouncement(latest);
+        const dismissedId = sessionStorage.getItem('dismissedAnnouncementId');
+        if (dismissedId === latest.id) {
+          setIsAnnouncementDismissed(true);
+        } else {
+          setIsAnnouncementDismissed(false);
+        }
       } else {
-        setIsAnnouncementDismissed(false);
+        setLatestAnnouncement(null);
       }
-    } else {
-      // If no announcements exist, ensure nothing is displayed.
-      setLatestAnnouncement(null);
-    }
+    };
+
+    // Load locally cached first, then fetch live from server
+    updateAnnouncements(announcementService.getAnnouncements());
+    announcementService.fetchAnnouncements().then(updateAnnouncements).catch(() => {});
     
     // Initialize state from URL query and hash parameters to support published links & direct searches
     const searchParams = new URLSearchParams(window.location.search);
@@ -374,6 +389,16 @@ const App: React.FC = () => {
     const modeParam = getParam('mode');
     if (modeParam && ['solver', 'quiz', 'scoreboard'].includes(modeParam)) {
       setMode(modeParam as 'solver' | 'quiz' | 'scoreboard');
+    }
+
+    const viewParam = getParam('view');
+    if (viewParam === 'admin') {
+      if (user?.isAdmin) {
+        setView('admin');
+      } else {
+        setAuthMode('login');
+        setIsAuthModalOpen(true);
+      }
     }
 
     let initialSubject = subject;
@@ -502,6 +527,12 @@ const App: React.FC = () => {
   }, []);
 
   const handleSubmit = () => {
+    if (!currentUser) {
+      setAuthMode('signup');
+      setIsAuthModalOpen(true);
+      setError('Please sign up or log in first. Operating the problem solver requires an account.');
+      return;
+    }
     executeSolve(subject, prompt, image.part, audienceLevel, topic, subTopic, year, semester);
   };
   
@@ -515,8 +546,22 @@ const App: React.FC = () => {
     setIsAuthModalOpen(true);
   };
 
-  const handleLogout = () => {
-    authService.logout();
+  // Maintain presence heartbeat for active session tracking
+  useEffect(() => {
+    if (!currentUser?.email) return;
+    authService.sendHeartbeat(currentUser.email).catch(() => {});
+    const interval = setInterval(() => {
+      authService.sendHeartbeat(currentUser.email).catch(() => {});
+    }, 25000);
+    return () => clearInterval(interval);
+  }, [currentUser?.email]);
+
+  const handleLogout = async () => {
+    if (currentUser?.email) {
+      await authService.logout(currentUser.email);
+    } else {
+      await authService.logout();
+    }
     setCurrentUser(null);
     setView('app');
     setMode('solver');
@@ -829,9 +874,10 @@ const App: React.FC = () => {
         isCodeCopied={isCodeCopied}
         onSettingsClick={() => setIsSettingsModalOpen(true)}
         onTutorClick={() => setIsTutorModalOpen(true)}
+        onApkClick={() => setIsApkModalOpen(true)}
       />
       <AnnouncementBanner />
-      <main className="flex-grow container mx-auto p-4 flex flex-col">
+      <main className="flex-grow container mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 py-5 flex flex-col">
         {renderAppContent()}
       </main>
       
@@ -874,6 +920,9 @@ const App: React.FC = () => {
           setActivePersonaState(persona);
         }}
       />
+      {isApkModalOpen && (
+        <AndroidApkModal onClose={() => setIsApkModalOpen(false)} />
+      )}
     </div>
   );
 };

@@ -13,6 +13,7 @@ type AuthFlowMode = 'login' | 'signup' | 'forgotPassword' | 'enterCode' | 'newPa
 const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMode = 'login' }) => {
   const [mode, setMode] = useState<AuthFlowMode>(initialMode);
   const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>(() => getActiveCountryCode());
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -56,7 +57,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
     try {
       switch (mode) {
         case 'login': {
-          const result = authService.login(email, password);
+          const result = await authService.login(email, password);
           if (result.success) {
             if (result.user?.country) {
               setActiveCountryCode(result.user.country);
@@ -68,14 +69,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
           break;
         }
         case 'signup': {
+          if (!fullName.trim()) {
+            setError('Please enter your Full Name.');
+            break;
+          }
           if (!email || !password) {
             setError('Please provide an email and password.');
             break;
           }
           const formattedPhone = phoneNumber.trim() ? `${selectedCountry.dialCode} ${phoneNumber.trim()}` : '';
-          const result = authService.signUp(
+          const result = await authService.signUp(
             email, 
             password, 
+            fullName.trim(),
             selectedCountry.code, 
             formattedPhone, 
             selectedCountry.curriculumName
@@ -89,7 +95,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
           break;
         }
         case 'forgotPassword': {
-          const result = authService.requestPasswordReset(email);
+          const result = await authService.requestPasswordReset(email);
           if (result.success) {
             let successMessage = result.message;
             if (result.code) {
@@ -103,7 +109,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
           break;
         }
         case 'enterCode': {
-            const result = authService.verifyResetCode(email, code);
+            const result = await authService.verifyResetCode(email, code);
             if (result.success) {
                 setMessage('');
                 setMode('newPassword');
@@ -121,7 +127,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
                 setError('Password must be at least 6 characters long.');
                 break;
             }
-            const result = authService.resetPassword(email, newPassword);
+            const result = await authService.resetPassword(email, newPassword);
             if (result.success) {
                 setMessage('Password reset successfully! Please log in.');
                 switchMode('login');
@@ -218,10 +224,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
               </div>
             </div>
 
+            {/* Full Name Field */}
+            <div>
+              <label className="block text-xs font-bold text-[var(--color-text-secondary)] mb-1">
+                👤 Full Name: *
+              </label>
+              <input
+                type="text" 
+                placeholder="e.g. Emmanuel Chukwuemeka" 
+                value={fullName} 
+                onChange={(e) => setFullName(e.target.value)}
+                className={commonInputClasses} 
+                required 
+              />
+            </div>
+
             {/* Email Field */}
             <div>
               <label className="block text-xs font-bold text-[var(--color-text-secondary)] mb-1">
-                📧 Email Address:
+                📧 Email Address: *
               </label>
               <input
                 type="email" placeholder="student@example.com" value={email} onChange={(e) => setEmail(e.target.value)}
@@ -279,9 +300,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess, initialMo
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[var(--color-text-secondary)] mb-1">
-                📧 Email:
-              </label>
+              <div className="flex justify-between items-center mb-1">
+                <label className="block text-xs font-bold text-[var(--color-text-secondary)]">
+                  📧 Email:
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail(authService.PRIMARY_ADMIN_EMAIL);
+                    setPassword('adminPassword2026!');
+                  }}
+                  className="text-[11px] text-[var(--color-accent)] hover:underline font-bold"
+                  title="Autofill Administrator Credentials"
+                >
+                  👑 Admin Quick-Fill
+                </button>
+              </div>
               <input
                 type="email" placeholder="Your account email" value={email} onChange={(e) => setEmail(e.target.value)}
                 className={commonInputClasses} required

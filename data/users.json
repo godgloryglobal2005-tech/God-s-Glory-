@@ -1,0 +1,38 @@
+{
+  "uyiglory2005@gmail.com": {
+    "email": "uyiglory2005@gmail.com",
+    "password": "uyi2005",
+    "isAdmin": true,
+    "country": "NG",
+    "phoneNumber": "+234 800 000 0000",
+    "curriculum": "National & Global Academic Standard",
+    "createdAt": 1788184875447,
+    "lastLoginAt": 1790778055577,
+    "loginCount": 8,
+    "lastActiveAt": 0
+  },
+  "student.samuel@example.com": {
+    "email": "student.samuel@example.com",
+    "password": "mypassword123",
+    "isAdmin": false,
+    "country": "NG",
+    "phoneNumber": "+234 812 345 6789",
+    "curriculum": "WAEC / NECO Senior Secondary",
+    "createdAt": 1790776884624,
+    "lastLoginAt": 1790776884624,
+    "loginCount": 1,
+    "lastActiveAt": 1790776884624
+  },
+  "perfectosaghae@gmail.com": {
+    "email": "perfectosaghae@gmail.com",
+    "password": "perfect",
+    "isAdmin": false,
+    "country": "NG",
+    "phoneNumber": "+234 08166267029",
+    "curriculum": "NERDC / WAEC / NECO / JAMB Standard",
+    "createdAt": 1790244772119,
+    "lastLoginAt": 1790778127688,
+    "loginCount": 4,
+    "lastActiveAt": 1790778278343
+  }
+}
