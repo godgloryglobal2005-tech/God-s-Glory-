@@ -1,0 +1,9 @@
+{
+  "name": "God's Glory tutors",
+  "description": "AI-powered tutoring from God's Glory Tutors to solve complex problems across a wide range of subjects including Theology, Languages, Sciences, and more. Input your question via text or an image and get detailed, university-level solutions with visual aids.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "prompt": ""
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>God's Glory tutors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "@google/genai": "https://esm.sh/@google/genai",
+    "marked": "https://esm.sh/marked@12.0.2",
+    "jspdf": "https://esm.sh/jspdf@2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@1.4.1",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/"
+  }
+}
+</script>
+    <style>
+      :root {
+        --color-bg: #F8FAFC;
+        --color-surface: #FFFFFF;
+        --color-surface-subtle: #F1F5F9;
+        --color-surface-hover: #FEF3C7;
+        --color-border: #E2E8F0;
+        --color-text-main: #0A192F;
+        --color-text-secondary: #1E3A8A;
+        --color-text-accent: #D97706;
+        --color-text-muted: #475569;
+        --color-text-subtle: #64748B;
+        --color-accent: #D97706;
+        --color-accent-hover: #B45309;
+        --color-accent-disabled: #FCD34D;
+        --color-icon-primary: #D97706;
+      }
+      /* For custom scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--color-bg); 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--color-accent);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-accent-hover);
+      }
+    </style>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-[var(--color-bg)] text-[var(--color-text-main)] antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
